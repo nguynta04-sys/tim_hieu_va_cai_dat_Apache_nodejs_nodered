@@ -120,8 +120,23 @@ DEADLINE: 26/10/2025
    - em mở trình duyệt tìm kiếm http;//nguyentuananh.local => em đã tạo được front-end html css js, gọi được api
    <img width="1920" height="1080" alt="Screenshot (37)" src="https://github.com/user-attachments/assets/28dce233-26ba-413c-b92d-cea1053f0cb0" />
 
-# trình bày những thứ mà em hiểu trong quá trình làm bài:
+# trình bày những thứ mà em hiểu trong quá trình làm bài: 
 
+   Qua quá trình làm xây dựng hệ thống backend bằng node.js và node-red, em đã hiểu được quy trình tích hợp giữa máy chủ web apache, nền tảng Node.js, công cụ luồng xử lý Node-red, và cơ sở dữ liệu SQL server. Đầu tiên em cài đặt và cấu hình Apache HTTP server nhằm mục đích kiểm tra khả năng hoạt động của web local thông qua trình duyệt với địa chỉ localhost. Tại đậy em học được cách đặt file .html vào thư mục gốc của Apache và hiểu cơ chế hoạt động của web server khi người dùng truy cập bằng tên miền hoặc địa chỉ IP. Đồng thời, em cũng gặp lỗi 404 do trùng tên miền với trang thực tế (nguyentuananh.com), qua đó em nhận ra tầm quan trọng của việc cấu hình Virtual Host và sử dụng đúng đường dẫn cục bộ để tránh xung đột.
+   
+   Tiếp theo, em cài đặt Node.js và Node-RED để xây dựng dịch vụ API phía backend. Việc cài đặt được thực hiện bằng lệnh npm install -g --unsafe-perm node-red --prefix "D:\nodejs\nodered", giúp tạo môi trường Node-RED trong thư mục riêng biệt. Sau đó, em sử dụng công cụ NSSM (Non-Sucking Service Manager) để biến Node-RED thành một dịch vụ Windows, có thể tự động chạy mỗi khi khởi động máy. Khi chạy lệnh nssm install a1-nodered "D:\nodejs\nodered\run-nodered.cmd" và nssm start a1-nodered, em hiểu rằng mình đã tạo thành công một service có thể khởi động hoặc khởi động lại bằng nssm restart a1-nodered. Việc này giúp Node-RED hoạt động ổn định hơn và không cần mở thủ công bằng CMD mỗi lần.
+   
+   Sau khi Node-RED khởi động tại http://localhost:1880, em bắt đầu thực hành tạo API back-end kết nối SQL Server. Trong phần Flow 1, em xây dựng một chuỗi luồng xử lý gồm các node:
+   -	http in – dùng để nhận yêu cầu từ client (ví dụ GET /timkiem),
+   - function – dùng để xử lý dữ liệu đầu vào và tạo câu truy vấn,
+   - 	MSSQL – thực thi truy vấn tới cơ sở dữ liệu SQL Server,
+   - 	http response – trả kết quả phản hồi cho client với mã 200 và kiểu nội dung application/json.
+
+   Em cũng hiểu được rằng để MSSQL node hoạt động, cần cấu hình chính xác các tham số kết nối như server (localhost), port (1433), database (KaraokeDB), username (sa) và password(123456789) tương ứng. Nếu làm việc trên máy cục bộ, các trường như domain có thể để trống. Cơ sở dữ liệu em sử dụng là KaraokeDB, trong đó có các bảng như ChiTietDichVu, ChuVu, NhanVien, DatPhong, DichVu, HoaDon, KhachHang, LoaiDichVu, LoaiPhong, NhanVien, PhongHat – được định nghĩa bằng các câu lệnh SQL đã tạo trước đó trong SQL Server Management Studio.
+
+   Sau khi hoàn thiện flow, em thêm node debug để quan sát dữ liệu trung gian trong quá trình xử lý. Cuối cùng, em kiểm tra hoạt động API bằng cách truy cập http://nguyentuananh.local/ trên trình duyệt (ở đoạn này em đã code lại trang web .html trong nguyentuananh ở apache24). Khi API hoạt động đúng, Node-RED sẽ truy vấn dữ liệu từ SQL Server và trả kết quả về dưới dạng JSON.
+
+   Thông qua quá trình này, em đã nắm rõ cách Apache hoạt động như web server phục vụ nội dung tĩnh, trong khi Node.js và Node-RED đóng vai trò backend xử lý logic và truy xuất cơ sở dữ liệu. Em hiểu mối quan hệ giữa các tầng trong mô hình web: client (giao diện) – server (Node-RED) – database (SQL Server), cùng cách cấu hình và vận hành dịch vụ trong Windows bằng NSSM. Kết quả là, em có thể tự tin xây dựng và triển khai một API back-end hoàn chỉnh có khả năng giao tiếp giữa trình duyệt, máy chủ và cơ sở dữ liệu, đồng thời hiểu sâu về quy trình hoạt động của từng thành phần trong hệ thống.
 
 
 
