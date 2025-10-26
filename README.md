@@ -54,54 +54,54 @@ DEADLINE: 26/10/2025
    - em kiểm tra xem có node.js chưa<br>
    <img width="1920" height="1080" alt="Screenshot (17)" src="https://github.com/user-attachments/assets/6b2acb9b-87ee-4da1-898c-7425e944eaf3" /><br>
    
-2.2 Cài đặt nodered:<br>
+2.2 Cài đặt nodered:
 
-   - em đã cài node-red thành công<br>
-   <img width="1920" height="1080" alt="Screenshot (18)" src="https://github.com/user-attachments/assets/36f27ef1-779c-4177-8dfa-d4eafbf12936" /><br>
+   - em đã cài node-red thành công
+   <img width="1920" height="1080" alt="Screenshot (18)" src="https://github.com/user-attachments/assets/36f27ef1-779c-4177-8dfa-d4eafbf12936" />
    
-   - em giải nén nssm.exe vào D:\nodejs\nodered\<br>
-   <img width="1920" height="1080" alt="Screenshot (19)" src="https://github.com/user-attachments/assets/4ed93476-616e-4a3e-bb76-30eae1d18c91" /><br>
+   - em giải nén nssm.exe vào D:\nodejs\nodered\
+   <img width="1920" height="1080" alt="Screenshot (19)" src="https://github.com/user-attachments/assets/4ed93476-616e-4a3e-bb76-30eae1d18c91" />
    
-   - em copy nssm.exe vào D:\nodejs\nodered\<br>
-   <img width="1920" height="1080" alt="Screenshot (20)" src="https://github.com/user-attachments/assets/7a560240-f197-44a9-b5c2-19d7a5943995" /><br>
+   - em copy nssm.exe vào D:\nodejs\nodered\
+   <img width="1920" height="1080" alt="Screenshot (20)" src="https://github.com/user-attachments/assets/7a560240-f197-44a9-b5c2-19d7a5943995" />
    
-   - em đã cài và vào node-red thành công<br>
-   <img width="1920" height="1080" alt="Screenshot (23)" src="https://github.com/user-attachments/assets/409e9d4a-8134-4c71-b7c7-59895ed5f443" /><br>
+   - em đã cài và vào node-red thành công
+   <img width="1920" height="1080" alt="Screenshot (23)" src="https://github.com/user-attachments/assets/409e9d4a-8134-4c71-b7c7-59895ed5f443" />
    
-2.3. Tạo csdl tuỳ ý trên mssql (sql server 2022)<br>
+2.3. Tạo csdl tuỳ ý trên mssql (sql server 2022)
 
-   - Em tạo 1 database tùy ý trên sql server bằng tài khoản sa:<br>
-   <img width="1920" height="1080" alt="Screenshot (24)" src="https://github.com/user-attachments/assets/f259ca9e-df87-4645-a71f-d4710d53407a" /><br>
+   - Em tạo 1 database tùy ý trên sql server bằng tài khoản sa:
+   <img width="1920" height="1080" alt="Screenshot (24)" src="https://github.com/user-attachments/assets/f259ca9e-df87-4645-a71f-d4710d53407a" />
    
-   - Em truy cập giao diện nodered bằng url: http://localhost:1880<br>
-    <img width="1920" height="1080" alt="Screenshot (26)" src="https://github.com/user-attachments/assets/b0df8973-105d-4697-bc58-28ce57de643a" /><br>
+   - Em truy cập giao diện nodered bằng url: http://localhost:1880
+    <img width="1920" height="1080" alt="Screenshot (26)" src="https://github.com/user-attachments/assets/b0df8973-105d-4697-bc58-28ce57de643a" />
     
-   - em cài đặt các thư viện theo thầy yêu cầu:<br>
-    <img width="1920" height="1080" alt="Screenshot (27)" src="https://github.com/user-attachments/assets/6caa44ab-e6fb-4faf-ae06-126f26bc26c1" /><br>
+   - em cài đặt các thư viện theo thầy yêu cầu:
+    <img width="1920" height="1080" alt="Screenshot (27)" src="https://github.com/user-attachments/assets/6caa44ab-e6fb-4faf-ae06-126f26bc26c1" />
     
-   - Em sửa file settings.js`<br>
-    <img width="1920" height="1080" alt="Screenshot (25)" src="https://github.com/user-attachments/assets/d886d72b-87dc-49b6-a17d-84a0c9188e5d" /><br>
+   - Em sửa file settings.js`
+    <img width="1920" height="1080" alt="Screenshot (25)" src="https://github.com/user-attachments/assets/d886d72b-87dc-49b6-a17d-84a0c9188e5d" />
     
-2.4. tạo api back-end bằng nodered:<br>
+2.4. tạo api back-end bằng nodered:
 
      - em đã lôi ra được 4 node và đổi tên thành API tìm kiếm<br>
-   <img width="1920" height="1080" alt="Screenshot (28)" src="https://github.com/user-attachments/assets/69c1ba01-9739-4568-9b7b-b54c11b01d37" /><br>
+   <img width="1920" height="1080" alt="Screenshot (28)" src="https://github.com/user-attachments/assets/69c1ba01-9739-4568-9b7b-b54c11b01d37" />
      
-     - Cấu hình từng node:<br>
-       + cấu hình cho node http in <br>
-   <img width="1920" height="1080" alt="Screenshot (29)" src="https://github.com/user-attachments/assets/ddeb3b85-01c3-4946-a1e7-d2d960465fcb" /><br>
+     - Cấu hình từng node:
+       + cấu hình cho node http in 
+   <img width="1920" height="1080" alt="Screenshot (29)" src="https://github.com/user-attachments/assets/ddeb3b85-01c3-4946-a1e7-d2d960465fcb" />
        
-       + cấu hình cho node function <br>
-   <img width="1920" height="1080" alt="Screenshot (30)" src="https://github.com/user-attachments/assets/86eed3b8-7104-4f0a-a915-c2ff64076f01" /><br>
+       + cấu hình cho node function 
+   <img width="1920" height="1080" alt="Screenshot (30)" src="https://github.com/user-attachments/assets/86eed3b8-7104-4f0a-a915-c2ff64076f01" />
        
-       * giải thích (Người dùng truy cập: http://localhost:1880/timkiem?q=VIP<br>
-         @q là tham số truyền vào câu lệnh SQL (giúp chống SQL injection)<br>
-         %VIP% giúp tìm mọi tên phòng chứa “VIP”<br>
+       * giải thích (Người dùng truy cập: http://localhost:1880/timkiem?q=VIP
+         @q là tham số truyền vào câu lệnh SQL (giúp chống SQL injection)
+         %VIP% giúp tìm mọi tên phòng chứa “VIP”
 
-      + Cấu hình cho node MSSQL<br>
-   <img width="1920" height="1080" alt="Screenshot (31)" src="https://github.com/user-attachments/assets/58a9b876-d157-4efa-a26c-3042145e2eec" /><br>
+      + Cấu hình cho node MSSQL
+   <img width="1920" height="1080" alt="Screenshot (31)" src="https://github.com/user-attachments/assets/58a9b876-d157-4efa-a26c-3042145e2eec" />
 
-      + Cấu hình cho node http response<br>
+      + Cấu hình cho node http response
 
 
 
