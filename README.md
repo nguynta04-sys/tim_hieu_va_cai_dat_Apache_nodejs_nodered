@@ -86,6 +86,10 @@ DEADLINE: 26/10/2025
 
      - em đã lôi ra được 4 node và đổi tên thành API tìm kiếm<br>
    <img width="1920" height="1080" alt="Screenshot (28)" src="https://github.com/user-attachments/assets/69c1ba01-9739-4568-9b7b-b54c11b01d37" />
+
+     - sơ đồ node-red của database karaoke:
+   <img width="1920" height="1080" alt="Screenshot (32)" src="https://github.com/user-attachments/assets/3a2a2022-5b42-4653-afe9-3f1ab84f1ffd" />
+
      
      - Cấu hình từng node:
        + cấu hình cho node http in 
@@ -101,7 +105,24 @@ DEADLINE: 26/10/2025
       + Cấu hình cho node MSSQL
    <img width="1920" height="1080" alt="Screenshot (31)" src="https://github.com/user-attachments/assets/58a9b876-d157-4efa-a26c-3042145e2eec" />
 
+   <img width="1920" height="1080" alt="Screenshot (34)" src="https://github.com/user-attachments/assets/c0841e3e-8ae2-4eec-a9ad-4e7d0a748115" />
+
       + Cấu hình cho node http response
+   <img width="1920" height="1080" alt="Screenshot (35)" src="https://github.com/user-attachments/assets/1a72607d-1a5b-45d4-bd31-e5bf10f97f5f" />
+
+      + click nút Deploy (nút đỏ trên góc phải).
+   <img width="1920" height="1080" alt="Screenshot (36)" src="https://github.com/user-attachments/assets/ac72c0d1-f03e-4137-918f-65587f5f7871" />
+
+   - em đã tạo được back-end api trên nodered, test qua url:
+   <img width="1920" height="1080" alt="Screenshot (38)" src="https://github.com/user-attachments/assets/ffa027ce-0dc8-4e21-81f1-021ec8da1660" />
+
+
+   - em mở trình duyệt tìm kiếm http;//nguyentuananh.local => em đã tạo được front-end html css js, gọi được api
+   <img width="1920" height="1080" alt="Screenshot (37)" src="https://github.com/user-attachments/assets/28dce233-26ba-413c-b92d-cea1053f0cb0" />
+
+# trình bày những thứ mà em hiểu trong quá trình làm bài:
+
+
 
 
 
