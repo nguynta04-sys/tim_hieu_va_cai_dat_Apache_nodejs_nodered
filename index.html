@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karaoke Management System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #94a3b8;
+            border-left: 3px solid transparent;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: white;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: white;
+            border-left-color: #3b82f6;
+        }
+
+        .nav-icon {
+            font-size: 1.3em;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px var(--shadow);
+            z-index: 10;
+        }
+
+        .page-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: #f1f5f9;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.25em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .card-body {
+            color: var(--secondary);
+        }
+
+        .card-footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 1px 3px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .stat-icon.red {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-label {
+            color: var(--secondary);
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 1px 3px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .form-control {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px var(--shadow);
+            border: 1px solid var(--border);
+            margin-top: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--light);
+        }
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--dark);
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: var(--light);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-dialog {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: var(--light);
+            cursor: pointer;
+            font-size: 1.2em;
+            color: var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        /* Room Status Indicators */
+        .room-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .room-status.available {
+            background: var(--success);
+            box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+        }
+
+        .room-status.occupied {
+            background: var(--danger);
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.2);
+        }
+
+        .room-status.reserved {
+            background: var(--warning);
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.2);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--secondary);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid var(--success);
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Menu Items */
+        .menu-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .menu-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .menu-item-info h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--dark);
+        }
+
+        .menu-item-info p {
+            color: var(--secondary);
+            font-size: 0.9em;
+        }
+
+        .menu-item-price {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar-header span,
+            .nav-item span,
+            .user-info div {
+                display: none;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            color: var(--border);
+            margin-bottom: 20px;
+        }
+
+        .empty-state-text {
+            color: var(--secondary);
+            font-size: 1.1em;
+        }
+
+        /* Price Display */
+        .price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Info Row */
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0;
+            color: var(--secondary);
+            font-size: 0.95em;
+        }
+
+        .info-row svg {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🎤</div>
+                    <span>Karaoke Pro</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-item active" onclick="switchPage('phong')">
+                    <span class="nav-icon">🏠</span>
+                    <span>Quản lý Phòng</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('khach')">
+                    <span class="nav-icon">👥</span>
+                    <span>Khách Hàng</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('dichvu')">
+                    <span class="nav-icon">🍽️</span>
+                    <span>Dịch Vụ</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('doanhthu')">
+                    <span class="nav-icon">📊</span>
+                    <span>Doanh Thu</span>
+                </div>
+                <div class="nav-item" onclick="switchPage('caidat')">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Cài Đặt</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div>
+                        <div style="font-weight: 600;">Admin</div>
+                        <div style="font-size: 0.85em; opacity: 0.7;">Quản lý</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <div class="topbar">
+                <h1 class="page-title" id="pageTitle">Quản lý Phòng Hát</h1>
+                <div class="topbar-actions">
+                    <button class="btn btn-secondary" onclick="location.reload()">
+                        🔄 Làm mới
+                    </button>
+                    <button class="btn btn-primary" id="topbarActionBtn">
+                        ➕ Đặt phòng
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div id="alertContainer"></div>
+
+                <!-- Page: Phòng Hát -->
+                <div id="page-phong" class="page-content">
+                    <div class="filter-bar">
+                        <select class="form-control" id="filterLoaiPhong" onchange="loadPhong()">
+                            <option value="">Tất cả loại phòng</option>
+                            <option value="VIP">VIP</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Couple">Couple</option>
+                            <option value="Family">Family</option>
+                        </select>
+                        <select class="form-control" id="filterTrangThai" onchange="loadPhong()">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="Trống">Trống</option>
+                            <option value="Đang sử dụng">Đang sử dụng</option>
+                            <option value="Đã đặt">Đã đặt</option>
+                        </select>
+                    </div>
+                    <div id="phongList" class="cards-grid"></div>
+                </div>
+
+                <!-- Page: Khách Hàng -->
+                <div id="page-khach" class="page-content" style="display:none;">
+                    <div class="filter-bar">
+                        <input type="text" class="form-control" id="searchSDT" placeholder="🔍 Tìm theo số điện thoại...">
+                        <button class="btn btn-primary" onclick="loadKhachHang()">Tìm kiếm</button>
+                    </div>
+                    <div id="khachList" class="cards-grid"></div>
+                </div>
+
+                <!-- Page: Dịch Vụ -->
+                <div id="page-dichvu" class="page-content" style="display:none;">
+                    <div class="filter-bar">
+                        <select class="form-control" id="filterLoaiDV" onchange="loadMenu()">
+                            <option value="">Tất cả loại dịch vụ</option>
+                            <option value="Đồ uống">Đồ uống</option>
+                            <option value="Đồ ăn">Đồ ăn</option>
+                            <option value="Hoa quả">Hoa quả</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                    <div id="menuList" class="menu-list"></div>
+                </div>
+
+                <!-- Page: Doanh Thu -->
+                <div id="page-doanhthu" class="page-content" style="display:none;">
+                    <div class="filter-bar">
+                        <select class="form-control" id="thangDT">
+                            <option value="1">Tháng 1</option>
+                            <option value="2">Tháng 2</option>
+                            <option value="3">Tháng 3</option>
+                            <option value="4">Tháng 4</option>
+                            <option value="5">Tháng 5</option>
+                            <option value="6">Tháng 6</option>
+                            <option value="7">Tháng 7</option>
+                            <option value="8">Tháng 8</option>
+                            <option value="9">Tháng 9</option>
+                            <option value="10" selected>Tháng 10</option>
+                            <option value="11">Tháng 11</option>
+                            <option value="12">Tháng 12</option>
+                        </select>
+                        <select class="form-control" id="namDT">
+                            <option value="2024">2024</option>
+                            <option value="2025" selected>2025</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="loadDoanhThu()">📊 Xem báo cáo</button>
+                    </div>
+                    <div class="stats-grid" id="statsContainer"></div>
+                    <div class="table-container">
+                        <table id="doanhThuTable">
+                            <thead>
+                                <tr>
+                                    <th>Ngày</th>
+                                    <th>Số hóa đơn</th>
+                                    <th>Tiền phòng</th>
+                                    <th>Tiền dịch vụ</th>
+                                    <th>Tổng doanh thu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doanhThuBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Page: Cài Đặt -->
+                <div id="page-caidat" class="page-content" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">⚙️ Cấu hình API Node-RED</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">URL API</label>
+                                <input type="text" class="form-input" id="apiUrl" value="http://localhost:1880/api">
+                            </div>
+                            <button class="btn btn-primary" onclick="saveApiUrl()">💾 Lưu cấu hình</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Đặt Phòng -->
+    <div id="modalDatPhong" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title">Đặt Phòng Mới</h3>
+                <button class="modal-close" onclick="closeModal('modalDatPhong')">×</button>
+            </div>
+            <form onsubmit="datPhong(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Khách hàng *</label>
+                        <select class="form-input" id="dpKhachHang" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phòng *</label>
+                        <select class="form-input" id="dpPhong" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Giờ bắt đầu *</label>
+                        <input type="datetime-local" class="form-input" id="dpGioBatDau" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ghi chú</label>
+                        <input type="text" class="form-input" id="dpGhiChu">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalDatPhong')">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận đặt phòng</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Chi Tiết Phòng -->
+    <div id="modalPhong" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalPhongTitle">Chi tiết phòng</h3>
+                <button class="modal-close" onclick="closeModal('modalPhong')">×</button>
+            </div>
+            <div class="modal-body" id="modalPhongContent"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('modalPhong')">Đóng</button>
+                <button class="btn btn-success" id="btnCheckin" style="display:none;" onclick="checkinPhong()">Check-in</button>
+                <button class="btn btn-danger" id="btnCheckout" style="display:none;" onclick="checkoutPhong()">Check-out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Config
+        let API_URL = localStorage.getItem('apiUrl') || 'http://localhost:1880/api';
+        document.getElementById('apiUrl').value = API_URL;
+        let currentPhongId = null;
+        let currentPage = 'phong';
+
+        // Switch Page
+        function switchPage(page) {
+            currentPage = page;
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.target.closest('.nav-item').classList.add('active');
+            
+            document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+            document.getElementById(`page-${page}`).style.display = 'block';
+
+            // Update page title and action button
+            const titles = {
+                phong: 'Quản lý Phòng Hát',
+                khach: 'Quản lý Khách Hàng',
+                dichvu: 'Quản lý Dịch Vụ',
+                doanhthu: 'Báo Cáo Doanh Thu',
+                caidat: 'Cài Đặt Hệ Thống'
+            };
+            document.getElementById('pageTitle').textContent = titles[page];
+
+            const actionBtn = document.getElementById('topbarActionBtn');
+            if (page === 'phong' || page === 'khach') {
+                actionBtn.style.display = 'block';
+                actionBtn.onclick = showDatPhongModal;
+                actionBtn.innerHTML = '➕ Đặt phòng';
+            } else {
+                actionBtn.style.display = 'none';
+            }
+
+            // Load data
+            if (page === 'phong') loadPhong();
+            if (page === 'khach') loadKhachHang();
+            if (page === 'dichvu') loadMenu();
+            if (page === 'doanhthu') loadDoanhThu();
+        }
+
+        // Alert
+        function showAlert(type, message) {
+            const container = document.getElementById('alertContainer');
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `<span style="font-size:1.2em;">${icons[type]}</span><span>${message}</span>`;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 4000);
+        }
+
+        // Save API URL
+        function saveApiUrl() {
+            const url = document.getElementById('apiUrl').value;
+            localStorage.setItem('apiUrl', url);
+            API_URL = url;
+            showAlert('success', 'Đã lưu cấu hình API thành công!');
+        }
+
+        // Format Money
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(amount);
+        }
+
+        // Load Phòng
+        async function loadPhong() {
+            const container = document.getElementById('phongList');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu...</p></div>';
+
+            const loai = document.getElementById('filterLoaiPhong').value;
+            const trangThai = document.getElementById('filterTrangThai').value;
+
+            let url = `${API_URL}/phong?`;
+            if (loai) url += `loai=${encodeURIComponent(loai)}&`;
+            if (trangThai) url += `trangthai=${encodeURIComponent(trangThai)}`;
+
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    container.innerHTML = result.data.map(p => {
+                        const statusClass = p.TrangThai === 'Trống' ? 'available' : 
+                                          p.TrangThai === 'Đang sử dụng' ? 'occupied' : 'reserved';
+                        const badgeClass = p.TrangThai === 'Trống' ? 'success' : 
+                                         p.TrangThai === 'Đang sử dụng' ? 'danger' : 'warning';
+                        
+                        return `
+                            <div class="card" onclick="showPhongDetail(${p.MaPhong})">
+                                <div class="card-header">
+                                    <div>
+                                        <div class="card-title">${p.TenPhong}</div>
+                                        <div style="color: var(--secondary); font-size: 0.9em;">${p.TenLoaiPhong}</div>
+                                    </div>
+                                    <span class="room-status ${statusClass}"></span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="info-row">
+                                        <span>👥</span>
+                                        <span>${p.SucChua} người</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span>💰</span>
+                                        <span class="price">${formatMoney(p.GiaTheoGio)}/giờ</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="badge badge-${badgeClass}">${p.TrangThai}</span>
+                                    <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.85em;">Xem chi tiết →</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🏠</div>
+                            <p class="empty-state-text">Không tìm thấy phòng nào</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p class="empty-state-text">Lỗi kết nối API. Vui lòng kiểm tra cấu hình.</p>
+                    </div>
+                `;
+                console.error(error);
+            }
+        }
+
+        // Load Khách Hàng
+        async function loadKhachHang() {
+            const container = document.getElementById('khachList');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Đang tải dữ liệu...</p></div>';
+
+            const sdt = document.getElementById('searchSDT').value;
+            let url = `${API_URL}/khachhang`;
+            if (sdt) url += `?sdt=${sdt}`;
+
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    container.innerHTML = result.data.map(k => `
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">${k.TenKH}</div>
+                                <span class="badge badge-info">${k.DiemTichLuy} điểm</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-row">
+                                    <span>📞</span>
+                                    <span>${k.SoDienThoai}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>✉️</span>
+                                    <span>${k.Email || 'Chưa có email'}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>📅</span>
+                                    <span>Tham gia: ${new Date(k.NgayDangKy).toLocaleDateString('vi-VN')}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">👥</div>
+                            <p class="empty-state-text">Không tìm thấy khách hàng</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p class="empty-state-text">Lỗi kết nối API</p>
+                    </div>
+                `;
+                console.error(error);
+            }
+        }
+
+        // Load Menu
+        async function loadMenu() {
+            const container = document.getElementById('menuList');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Đang tải menu...</p></div>';
+
+            const loai = document.getElementById('filterLoaiDV').value;
+            let url = `${API_URL}/menu`;
+            if (loai) url += `?loai=${encodeURIComponent(loai)}`;
+
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    container.innerHTML = result.data.map(dv => `
+                        <div class="menu-item">
+                            <div class="menu-item-info">
+                                <h4>${dv.TenDV}</h4>
+                                <p>${dv.TenLoaiDV} • Còn ${dv.TonKho} ${dv.DonViTinh}</p>
+                            </div>
+                            <div class="menu-item-price">${formatMoney(dv.DonGia)}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🍽️</div>
+                            <p class="empty-state-text">Không có dịch vụ nào</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p class="empty-state-text">Lỗi kết nối API</p>
+                    </div>
+                `;
+                console.error(error);
+            }
+        }
+
+        // Load Doanh Thu
+        async function loadDoanhThu() {
+            const statsContainer = document.getElementById('statsContainer');
+            const tbody = document.getElementById('doanhThuBody');
+            
+            statsContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Đang tải...</td></tr>';
+
+            const thang = document.getElementById('thangDT').value;
+            const nam = document.getElementById('namDT').value;
+
+            try {
+                const response = await fetch(`${API_URL}/doanhthu?thang=${thang}&nam=${nam}`);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    const totalRevenue = result.data.reduce((sum, d) => sum + (d.TongDoanhThu || 0), 0);
+                    const totalOrders = result.data.reduce((sum, d) => sum + (d.SoHoaDon || 0), 0);
+                    const avgPerDay = totalRevenue / result.data.length;
+
+                    statsContainer.innerHTML = `
+                        <div class="stat-card">
+                            <div class="stat-icon blue">💰</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Tổng Doanh Thu</div>
+                                <div class="stat-value">${formatMoney(totalRevenue)}</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">📋</div>
+                            <div class="stat-info">
+                                <div class="stat-label">Số Hóa Đơn</div>
+                                <div class="stat-value">${totalOrders}</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">📊</div>
+                            <div class="stat-info">
+                                <div class="stat-label">TB/Ngày</div>
+                                <div class="stat-value">${formatMoney(avgPerDay)}</div>
+                            </div>
+                        </div>
+                    `;
+
+                    tbody.innerHTML = result.data.map(d => `
+                        <tr>
+                            <td><strong>Ngày ${d.Ngay}</strong></td>
+                            <td style="text-align:center;">${d.SoHoaDon}</td>
+                            <td>${formatMoney(d.TongTienPhong || 0)}</td>
+                            <td>${formatMoney(d.TongTienDichVu || 0)}</td>
+                            <td><strong class="price">${formatMoney(d.TongDoanhThu)}</strong></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    statsContainer.innerHTML = '';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;">Không có dữ liệu doanh thu</td></tr>';
+                }
+            } catch (error) {
+                statsContainer.innerHTML = '';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:red;padding:40px;">❌ Lỗi kết nối API</td></tr>';
+                console.error(error);
+            }
+        }
+
+        // Show Modal Đặt Phòng
+        async function showDatPhongModal() {
+            document.getElementById('modalDatPhong').classList.add('show');
+            
+            try {
+                // Load khách hàng
+                const khResponse = await fetch(`${API_URL}/khachhang`);
+                const khResult = await khResponse.json();
+                document.getElementById('dpKhachHang').innerHTML = khResult.data.map(k => 
+                    `<option value="${k.MaKH}">${k.TenKH} - ${k.SoDienThoai}</option>`
+                ).join('');
+
+                // Load phòng trống
+                const phResponse = await fetch(`${API_URL}/phong?trangthai=Trống`);
+                const phResult = await phResponse.json();
+                document.getElementById('dpPhong').innerHTML = phResult.data.map(p => 
+                    `<option value="${p.MaPhong}">${p.TenPhong} - ${p.TenLoaiPhong} (${formatMoney(p.GiaTheoGio)}/h)</option>`
+                ).join('');
+
+                // Set thời gian hiện tại
+                const now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+                document.getElementById('dpGioBatDau').value = now.toISOString().slice(0, 16);
+            } catch (error) {
+                showAlert('error', 'Không thể tải dữ liệu. Vui lòng thử lại.');
+                console.error(error);
+            }
+        }
+
+        // Đặt Phòng
+        async function datPhong(e) {
+            e.preventDefault();
+            
+            const data = {
+                MaKH: parseInt(document.getElementById('dpKhachHang').value),
+                MaPhong: parseInt(document.getElementById('dpPhong').value),
+                MaNV: 1,
+                GioBatDau: document.getElementById('dpGioBatDau').value,
+                GhiChu: document.getElementById('dpGhiChu').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/datphong`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('success', 'Đặt phòng thành công!');
+                    closeModal('modalDatPhong');
+                    loadPhong();
+                } else {
+                    showAlert('error', 'Đặt phòng thất bại. Vui lòng thử lại.');
+                }
+            } catch (error) {
+                showAlert('error', 'Lỗi kết nối. Vui lòng kiểm tra API.');
+                console.error(error);
+            }
+        }
+
+        // Show Phòng Detail
+        async function showPhongDetail(maPhong) {
+            currentPhongId = maPhong;
+            document.getElementById('modalPhong').classList.add('show');
+            
+            const content = document.getElementById('modalPhongContent');
+            content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Đang tải...</p></div>';
+
+            try {
+                const response = await fetch(`${API_URL}/phong`);
+                const result = await response.json();
+                const phong = result.data.find(p => p.MaPhong === maPhong);
+
+                if (phong) {
+                    document.getElementById('modalPhongTitle').textContent = phong.TenPhong;
+                    
+                    content.innerHTML = `
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="margin-bottom: 10px;">Thông tin phòng</h4>
+                            <div class="info-row"><span>📍</span><span>Loại: ${phong.TenLoaiPhong}</span></div>
+                            <div class="info-row"><span>👥</span><span>Sức chứa: ${phong.SucChua} người</span></div>
+                            <div class="info-row"><span>💰</span><span>Giá: ${formatMoney(phong.GiaTheoGio)}/giờ</span></div>
+                            <div class="info-row"><span>🚪</span><span>Trạng thái: <strong>${phong.TrangThai}</strong></span></div>
+                        </div>
+                    `;
+
+                    // Hiển thị nút phù hợp
+                    document.getElementById('btnCheckin').style.display = phong.TrangThai === 'Đã đặt' ? 'block' : 'none';
+                    document.getElementById('btnCheckout').style.display = phong.TrangThai === 'Đang sử dụng' ? 'block' : 'none';
+                }
+            } catch (error) {
+                content.innerHTML = '<p style="color:red;">Lỗi tải thông tin phòng</p>';
+                console.error(error);
+            }
+        }
+
+        // Check-in
+        async function checkinPhong() {
+            try {
+                const response = await fetch(`${API_URL}/checkin/${currentPhongId}`, {
+                    method: 'PUT'
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('success', 'Check-in thành công!');
+                    closeModal('modalPhong');
+                    loadPhong();
+                } else {
+                    showAlert('error', 'Check-in thất bại.');
+                }
+            } catch (error) {
+                showAlert('error', 'Lỗi kết nối API');
+                console.error(error);
+            }
+        }
+
+        // Check-out
+        async function checkoutPhong() {
+            if (!confirm('Xác nhận check-out và tạo hóa đơn?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/checkout/${currentPhongId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ MaNV: 1, GiamGia: 0, PhuongThucTT: 'Tiền mặt' })
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('success', 'Check-out thành công! Hóa đơn đã được tạo.');
+                    closeModal('modalPhong');
+                    loadPhong();
+                } else {
+                    showAlert('error', 'Check-out thất bại.');
+                }
+            } catch (error) {
+                showAlert('error', 'Lỗi kết nối API');
+                console.error(error);
+            }
+        }
+
+        // Close Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPhong();
+        });
+    </script>
+</body>
+</html>
